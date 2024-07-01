@@ -1,3 +1,5 @@
+// screens/searchScreen.js
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView, Image, Dimensions } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';

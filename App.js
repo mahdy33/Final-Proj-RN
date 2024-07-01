@@ -6,6 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomePage from './screens/HomePage';
 import GuideRegister from './screens/GuideRegister';
 import TouristRegister from './screens/TouristRegister';
+import GuideSignUp from './screens/GuideSignUp';
+import TouristSignUp from './screens/TouristSignUp';
 import DatePicker from 'react-native-date-picker';
 
 
@@ -34,11 +36,13 @@ function MainScreen({ navigation }) {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Main">
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="GuideRegister" component={GuideRegister} />
         <Stack.Screen name="TouristRegister" component={TouristRegister} />
+        <Stack.Screen name="GuideSignUp" component={GuideSignUp} />
+        <Stack.Screen name="TouristSignUp" component={TouristSignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

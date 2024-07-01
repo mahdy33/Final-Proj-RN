@@ -1,3 +1,5 @@
+// screens/GuideRegister.js
+
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import GoogleLogo from '../assets/google-logo.svg';
@@ -110,7 +112,7 @@ export default function GuideRegister() {
             </View>
             <TouchableOpacity
                 style={styles.registerButton}
-                onPress={() => navigation.navigate('GuideSignUp')} // Navigate to TouristRegister
+                onPress={() => navigation.navigate('GuideSignUp')} // Navigate to GuideSignUp
             >
                 <Text style={styles.registerButtonText}>Register as guide</Text>
             </TouchableOpacity>
