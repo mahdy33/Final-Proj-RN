@@ -14,6 +14,7 @@ export default function GuideRegister() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
 
+
     const btnLogin = () => {
         const s = {
             Name: name,
@@ -44,7 +45,7 @@ export default function GuideRegister() {
             .then(result => {
                 console.log('API response:', result);
 
-                navigation.navigate('HomePage'); // Navigate to HomePage on success
+                navigation.navigate('HomePage');
             })
             .catch(error => {
                 console.log('Fetch error:', error);
@@ -66,6 +67,7 @@ export default function GuideRegister() {
                     value={name}
                     onChangeText={setName}
                 />
+
             </View>
             <View style={styles.inputContainer}>
                 <Icon name="lock" size={20} color="#666" style={styles.inputIcon} />
@@ -108,9 +110,9 @@ export default function GuideRegister() {
             </View>
             <TouchableOpacity
                 style={styles.registerButton}
-                onPress={() => navigation.navigate('TouristRegister')} // Navigate to TouristRegister
+                onPress={() => navigation.navigate('GuideSignUp')} // Navigate to TouristRegister
             >
-                <Text style={styles.registerButtonText}>Register as Tourist</Text>
+                <Text style={styles.registerButtonText}>Register as guide</Text>
             </TouchableOpacity>
         </View>
     );
@@ -132,6 +134,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
         marginBottom: 10,
+
     },
     inputContainer: {
         flexDirection: 'row',
@@ -168,6 +171,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5,
         marginVertical: 10,
+
     },
     loginButtonText: {
         color: '#fff',
@@ -178,6 +182,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginVertical: 20,
+
+
     },
     separatorLine: {
         flex: 1,

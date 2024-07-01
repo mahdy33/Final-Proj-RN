@@ -1,20 +1,60 @@
-// screens/TouristRegister.js
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import GoogleLogo from '../assets/google-logo.svg';
 import FacebookLogo from '../assets/Facebook_f_logo_(2019).svg';
 import AppleLogo from '../assets/Apple_logo_black.svg';
+import GuidesLogo from '../assets/guides-logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import DatePicker from 'react-native-date-picker';
 
+const apiUrl = 'http://guidest.somee.com/api/Guides';
 
 export default function TouristRegister() {
     const navigation = useNavigation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const btnRegister = () => {
+        const s = {
+            Email: email,
+            Pass: password
+        };
+
+        console.log('Sending registration request with:', s);
+
+        fetch(apiUrl + '/register', {
+            method: 'POST',
+            body: JSON.stringify(s),
+            headers: new Headers({
+                'Content-type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+            })
+        })
+            .then(res => {
+                console.log('Response status:', res.status);
+                if (res.status === 200) {
+                    return res.json();
+                } else if (res.status === 404) {
+                    throw new Error('Email or Password not correct');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(result => {
+                console.log('API response:', result);
+
+                navigation.navigate('HomePage');
+            })
+            .catch(error => {
+                console.log('Fetch error:', error);
+                Alert.alert('Registration Failed', error.message);
+            });
+    };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tourist Login</Text>
+            <GuidesLogo width={128} height={128} style={styles.logo} />
+            <Text style={styles.title}>Tourist Register</Text>
             <View style={styles.inputContainer}>
                 <Icon name="envelope" size={20} color="#666" style={styles.inputIcon} />
                 <TextInput
@@ -23,6 +63,8 @@ export default function TouristRegister() {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
+                    value={email}
+                    onChangeText={setEmail}
                 />
             </View>
             <View style={styles.inputContainer}>
@@ -33,6 +75,8 @@ export default function TouristRegister() {
                     secureTextEntry
                     autoCapitalize="none"
                     autoCorrect={false}
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </View>
             <View style={styles.forgotPasswordContainer}>
@@ -41,10 +85,10 @@ export default function TouristRegister() {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity
-                style={styles.registerButton}
-                onPress={() => navigation.navigate('HomePage')} // Navigate to HomePage
+                style={styles.loginButton}
+                onPress={btnRegister} // Call btnRegister on press
             >
-                <Text style={styles.registerButtonText}>Register</Text>
+                <Text style={styles.loginButtonText}>Register</Text>
             </TouchableOpacity>
             <View style={styles.separatorContainer}>
                 <View style={styles.separatorLine} />
@@ -62,6 +106,12 @@ export default function TouristRegister() {
                     <AppleLogo width={32} height={32} />
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity
+                style={styles.registerButton}
+                onPress={() => navigation.navigate('TouristSignUp')} // Navigate to TouristRegister
+            >
+                <Text style={styles.registerButtonText}>Register as tourist</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -73,6 +123,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
+    },
+    logo: {
+        marginBottom: 20, // Add some margin to separate it from the title
     },
     title: {
         fontSize: 24,
@@ -107,7 +160,7 @@ const styles = StyleSheet.create({
         color: '#007BFF',
         fontSize: 14,
     },
-    registerButton: {
+    loginButton: {
         width: '100%',
         height: 50,
         backgroundColor: '#007BFF',
@@ -116,7 +169,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginVertical: 10,
     },
-    registerButtonText: {
+    loginButtonText: {
         color: '#fff',
         fontSize: 16,
     },
@@ -156,5 +209,12 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 3,
         marginHorizontal: 10, // Add horizontal margin to separate buttons
+    },
+    registerButton: {
+        marginTop: 20,
+    },
+    registerButtonText: {
+        color: '#007BFF',
+        fontSize: 16,
     },
 });
