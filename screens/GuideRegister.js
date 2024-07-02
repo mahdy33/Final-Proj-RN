@@ -47,7 +47,7 @@ export default function GuideRegister() {
             .then(result => {
                 console.log('API response:', result);
 
-                navigation.navigate('HomePage');
+                navigation.navigate('HomePageGuide');
             })
             .catch(error => {
                 console.log('Fetch error:', error);

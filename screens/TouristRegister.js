@@ -24,7 +24,7 @@ export default function TouristRegister() {
 
         console.log('Sending registration request with:', s);
 
-        fetch(apiUrl + '/register', {
+        fetch(apiUrl + '/login', {
             method: 'POST',
             body: JSON.stringify(s),
             headers: new Headers({
