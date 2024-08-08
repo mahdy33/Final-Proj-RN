@@ -1,8 +1,51 @@
-// screens/SettingsScreen.js
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Switch, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { List } from 'react-native-paper';
+import * as TaskManager from 'expo-task-manager';
+import * as Location from 'expo-location';
+
+const LOCATION_TASK_NAME = 'background-location-task';
+
+const requestPermissions = async () => {
+    try {
+        const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
+        console.log(`Foreground status: ${foregroundStatus}`);
+        console.log(`Foreground status: ${foregroundStatus}`);
+        if (foregroundStatus === 'granted') {
+            console.log(`Foreground status: ${foregroundStatus}`);
+            const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync(); //here
+            console.log(`Background status: ${backgroundStatus}`);
+            if (backgroundStatus === 'granted') {
+                await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+                    accuracy: Location.Accuracy.Balanced,
+                });
+                console.log('Background location tracking enabled.');
+            } else {
+                console.log('Background location permission not granted.');
+            }
+        } else {
+            console.log('Foreground location permission not granted.');
+        }
+
+        const location = await Location.getCurrentPositionAsync({});
+        const address = await Location.reverseGeocodeAsync(location.coords);
+        console.log(`Location: ${JSON.stringify(address[0])}`);
+    } catch (error) {
+        console.error(`Error getting location: ${error}`);
+    }
+};
+
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, error }) => {
+    if (error) {
+        console.error(error);
+        return;
+    }
+    if (data) {
+        const { locations } = data;
+        console.log('Received new locations:', locations);
+    }
+});
 
 export default function SettingsScreen() {
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -40,8 +83,11 @@ export default function SettingsScreen() {
                 <List.Item
                     title="Location"
                     left={() => <Icon name="location-outline" size={24} color="#000" />}
-                    right={() => <Icon name="chevron-forward-outline" size={24} color="#000" />}
-                    onPress={() => { }}
+                    right={() => (
+                        <TouchableOpacity onPress={requestPermissions}>
+                            <Text style={styles.enableText}>Enable</Text>
+                        </TouchableOpacity>
+                    )}
                 />
                 <List.Item
                     title="Email Notifications"
@@ -123,5 +169,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
         marginBottom: 10,
+    },
+    enableText: {
+        color: '#007bff',
+        fontSize: 16,
     },
 });

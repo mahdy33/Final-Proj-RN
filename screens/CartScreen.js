@@ -7,7 +7,7 @@ import DatePicker from 'react-native-date-picker';
 export default function CartScreen() {
     return (
         <View style={styles.container}>
-            <Text>Cart Screen</Text>
+            <Text>favorite guides Screen</Text>
         </View>
     );
 }

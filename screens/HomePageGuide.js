@@ -1,10 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const HomePageGuide = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const guide = route.params?.guide;
+
+    if (!guide) {
+        console.error("Guide data is missing");
+        navigation.navigate('GuideRegister'); // Redirect or show an error message
+        return null; // Stop rendering if there's no guide data
+    }
 
     const trips = [
         { id: 1, title: 'Settings', subtitle: 'Pakistan', iconName: 'cog' },
@@ -12,6 +20,10 @@ const HomePageGuide = () => {
         { id: 3, title: 'Reviews', subtitle: 'America', iconName: 'star' },
         { id: 4, title: 'Trips', subtitle: 'America', iconName: 'map' },
     ];
+
+    const handleProfilePress = () => {
+        navigation.navigate('ProfileScreen', { guide }); // Pass the guide data
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -35,11 +47,14 @@ const HomePageGuide = () => {
             </View>
             <View style={styles.tripsContainer}>
                 {trips.map(trip => (
-                    <View key={trip.id} style={styles.tripCard}>
+                    <TouchableOpacity
+                        key={trip.id}
+                        style={styles.tripCard}
+                        onPress={trip.title === 'Profile' ? handleProfilePress : () => { }}>
                         <Icon name={trip.iconName} size={50} color="#333" style={styles.tripIcon} />
                         <Text style={styles.tripTitle}>{trip.title}</Text>
                         <Text style={styles.tripSubtitle}>{trip.subtitle}</Text>
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </View>
         </ScrollView>

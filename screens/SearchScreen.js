@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, ScrollView, Image, Dimensions, Linking, KeyboardAvoidingView, FlatList } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import GuidesLogo from '../assets/guides-logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native-paper';
+import { FavoritesContext } from '../FavoritesContext';
 import { OPEN_CAGE_API, OPENWEATHERMAP_API_KEY } from '@env';
 
 const images = [
@@ -16,16 +16,26 @@ const images = [
 
 const CITY_NAME = 'paris';
 
-const TripCard = ({ image, title, subtitle, rating }) => {
+const TripCard = ({ guide }) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const { addFavorite, removeFavorite } = useContext(FavoritesContext);
+
+    const toggleFavorite = () => {
+        setIsFavorite(!isFavorite);
+        if (isFavorite) {
+            removeFavorite(guide);
+        } else {
+            addFavorite(guide);
+        }
+    };
 
     return (
         <View style={styles.tripCard}>
-            <Image source={image} style={styles.tripImage} />
-            <Text style={styles.tripTitle}>{title}</Text>
-            <Text style={styles.tripSubtitle}>{subtitle}</Text>
+            <Image source={require('../assets/searchscreen3.jpeg')} style={styles.tripImage} />
+            <Text style={styles.tripTitle}>{guide.first_name} {guide.last_name}</Text>
+            <Text style={styles.tripSubtitle}>Speaks: {guide.languages ? guide.languages.join(', ') : 'N/A'}</Text>
             <View style={styles.tripFooter}>
-                <TouchableOpacity onPress={() => setIsFavorite(!isFavorite)}>
+                <TouchableOpacity onPress={toggleFavorite}>
                     <Icon name="heart" size={20} color={isFavorite ? "#FF1493" : "#000"} />
                 </TouchableOpacity>
                 <View style={styles.ratingContainer}>
@@ -34,10 +44,10 @@ const TripCard = ({ image, title, subtitle, rating }) => {
                             key={index}
                             name="star"
                             size={20}
-                            color={index < rating ? "#FFD700" : "#ccc"}
+                            color={index < guide.average_rating ? "#FFD700" : "#ccc"}
                         />
                     ))}
-                    <Text style={styles.ratingText}>{rating}/5</Text>
+                    <Text style={styles.ratingText}>{guide.average_rating}/5</Text>
                 </View>
             </View>
         </View>
@@ -60,10 +70,12 @@ export default function SearchScreen() {
     const [searchQuery, setSearchQuery] = useState('');
     const [countries, setCountries] = useState([]);
     const [filteredCountries, setFilteredCountries] = useState([]);
+    const [guides, setGuides] = useState([]);
 
     useEffect(() => {
         fetchTemperature();
         fetchCountries();
+        fetchGuides();
     }, []);
 
     const fetchTemperature = async () => {
@@ -90,10 +102,22 @@ export default function SearchScreen() {
         }
     };
 
+    const fetchGuides = async () => {
+        try {
+            const response = await axios.get('https://application-guides.onrender.com/api/guides');
+            if (response.data.Guides) {
+                setGuides(response.data.Guides);
+            } else {
+                console.error('Unexpected response structure:', response.data);
+            }
+        } catch (error) {
+            console.error('Error fetching guides:', error);
+        }
+    };
+
     const handleLogout = () => {
         console.log('Logout pressed');
         console.log(`Open Cage API Key: ${OPEN_CAGE_API}`);
-        // Add your logout logic here
     };
 
     const handleConfirmFromDate = (date) => {
@@ -133,7 +157,7 @@ export default function SearchScreen() {
     );
 
     const renderTripCard = ({ item }) => (
-        <TripCard image={item.image} title={item.title} subtitle={item.subtitle} rating={item.rating} />
+        <TripCard guide={item} />
     );
 
     return (
@@ -227,12 +251,7 @@ export default function SearchScreen() {
                     <Text style={styles.sectionTitle}>Guides</Text>
                 </View>
                 <FlatList
-                    data={[
-                        { image: require('../assets/searchscreen3.jpeg'), title: "Gujrat", subtitle: "", rating: 2 },
-                        { image: require('../assets/searchscreen3.jpeg'), title: "London", subtitle: "", rating: 4 },
-                        { image: require('../assets/searchscreen3.jpeg'), title: "Washington", subtitle: "", rating: 3 },
-                        { image: require('../assets/searchscreen3.jpeg'), title: "New York", subtitle: "", rating: 5 },
-                    ]}
+                    data={guides}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     renderItem={renderTripCard}

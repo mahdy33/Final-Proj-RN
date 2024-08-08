@@ -1,15 +1,110 @@
-// screens/ProfileScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import Dialog from 'react-native-dialog';
+import { useRoute } from '@react-navigation/native';
 
 export default function ProfileScreen() {
+    const route = useRoute();
+    const { guide } = route.params;
+
+    const [guideInfo, setGuideInfo] = useState({
+        id: guide.id,
+        first_name: guide.first_name,
+        last_name: guide.last_name,
+        email: guide.email,
+        languages: guide.languages || [],
+        bio: guide.bio || '',
+        country: guide.country || '',
+        phone_number: guide.phone_number || '',
+    });
+
+    const [visible, setVisible] = useState(false);
+    const [updatedGuide, setUpdatedGuide] = useState({ ...guideInfo });
+    const [routes, setRoutes] = useState([]);
+
+    useEffect(() => {
+        const fetchGuideDetails = async () => {
+            try {
+                console.log("Fetching guide details for ID:", guideInfo.id);
+                const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`);
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Fetched guide details:", result);
+                    setGuideInfo(result.guide);
+                    setUpdatedGuide(result.guide);
+                } else {
+                    Alert.alert("Error", "There was a problem fetching guide details.");
+                }
+            } catch (error) {
+                Alert.alert("Error", "There was a problem fetching guide details.");
+            }
+        };
+
+        const fetchRoutes = async () => {
+            try {
+                const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}/routes`);
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Fetched routes:", result);
+                    setRoutes(result.routes);
+                } else {
+                    Alert.alert("Error", "There was a problem fetching routes.");
+                }
+            } catch (error) {
+                Alert.alert("Error", "There was a problem fetching routes.");
+            }
+        };
+
+        fetchGuideDetails();
+        fetchRoutes();
+    }, [guideInfo.id]);
+
+    const handleUpdatePress = () => {
+        setVisible(true);
+    };
+
+    const handleCancel = () => {
+        setVisible(false);
+    };
+
+    const handleUpdate = async () => {
+        setVisible(false);
+
+        console.log("Updating guide with data:", updatedGuide);
+
+        const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedGuide),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Updated guide data:", result);
+            setGuideInfo(result);
+            Alert.alert("Success", "Your information has been updated.");
+        } else {
+            Alert.alert("Error", "There was a problem updating your information.");
+        }
+    };
+
+    if (!guideInfo) {
+        return (
+            <View style={styles.container}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Image
                 source={{ uri: 'https://placekitten.com/200/200' }}
                 style={styles.profileImage}
             />
-            <Text style={styles.title}>GoodMorning Guide</Text>
+            <Text style={styles.title}>Good Morning Guide</Text>
             <View style={styles.tripSection}>
                 <TouchableOpacity style={styles.tripButton}>
                     <Text style={styles.tripButtonText}>My current Trip</Text>
@@ -22,10 +117,13 @@ export default function ProfileScreen() {
                 <Text style={styles.sectionButtonText}>My Trips</Text>
             </TouchableOpacity>
             <View style={styles.tripsList}>
-                <Text style={styles.tripText}>trip 1</Text>
-                <Text style={styles.tripText}>trip 2</Text>
-                <Text style={styles.tripText}>trip 3</Text>
-                <Text style={styles.tripText}>etc</Text>
+                {routes.length > 0 ? (
+                    routes.map((route, index) => (
+                        <Text key={index} style={styles.tripText}>{route.name}</Text>
+                    ))
+                ) : (
+                    <Text style={styles.tripText}>No routes available</Text>
+                )}
             </View>
             <TouchableOpacity style={styles.sectionButton}>
                 <Text style={styles.sectionButtonText}>Add Trip</Text>
@@ -39,6 +137,50 @@ export default function ProfileScreen() {
                 <Text style={styles.reviewText}>3</Text>
                 <Text style={styles.reviewText}>4</Text>
             </View>
+            <TouchableOpacity style={styles.updateButton} onPress={handleUpdatePress}>
+                <Text style={styles.updateButtonText}>Update Information</Text>
+            </TouchableOpacity>
+
+            <Dialog.Container visible={visible}>
+                <Dialog.Title>Update Information</Dialog.Title>
+                <Dialog.Input
+                    label="First Name"
+                    value={updatedGuide.first_name}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, first_name: text })}
+                />
+                <Dialog.Input
+                    label="Last Name"
+                    value={updatedGuide.last_name}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, last_name: text })}
+                />
+                <Dialog.Input
+                    label="Bio"
+                    value={updatedGuide.bio}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, bio: text })}
+                />
+                <Dialog.Input
+                    label="Country"
+                    value={updatedGuide.country}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, country: text })}
+                />
+                <Dialog.Input
+                    label="Phone Number"
+                    value={updatedGuide.phone_number}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, phone_number: text })}
+                />
+                <Dialog.Input
+                    label="Email"
+                    value={updatedGuide.email}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, email: text })}
+                />
+                <Dialog.Input
+                    label="Languages (comma separated)"
+                    value={updatedGuide.languages ? updatedGuide.languages.join(', ') : ''}
+                    onChangeText={(text) => setUpdatedGuide({ ...updatedGuide, languages: text.split(',').map(lang => lang.trim()) })}
+                />
+                <Dialog.Button label="Cancel" onPress={handleCancel} />
+                <Dialog.Button label="Update" onPress={handleUpdate} />
+            </Dialog.Container>
         </ScrollView>
     );
 }
@@ -114,5 +256,18 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: 16,
         marginVertical: 2,
+    },
+    updateButton: {
+        width: '100%',
+        backgroundColor: '#28a745',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    updateButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });

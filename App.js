@@ -69,8 +69,7 @@
 
 
 
-
-
+// App.js
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -80,7 +79,11 @@ import GuideRegister from './screens/GuideRegister';
 import TouristRegister from './screens/TouristRegister';
 import GuideSignUp from './screens/GuideSignUp';
 import TouristSignUp from './screens/TouristSignUp';
-import HomePageGuide from './screens/HomePageGuide'; // Import HomePageGuide
+import HomePageGuide from './screens/HomePageGuide';
+import FavoriteScreen from './screens/FavoriteScreen';
+import { FavoritesProvider } from './FavoritesContext';
+import ProfileScreen from './screens/ProfileScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -102,25 +105,30 @@ function MainScreen({ navigation }) {
       />
       <Button
         title="Guide Home Page"
-        onPress={() => navigation.navigate('HomePageGuide')} // Add navigation to HomePageGuide
+        onPress={() => navigation.navigate('HomePageGuide')}
       />
+
     </View>
   );
 }
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={MainScreen} />
-        <Stack.Screen name="HomePage" component={HomePage} />
-        <Stack.Screen name="GuideRegister" component={GuideRegister} />
-        <Stack.Screen name="TouristRegister" component={TouristRegister} />
-        <Stack.Screen name="GuideSignUp" component={GuideSignUp} />
-        <Stack.Screen name="TouristSignUp" component={TouristSignUp} />
-        <Stack.Screen name="HomePageGuide" component={HomePageGuide} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <FavoritesProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Main">
+          <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="GuideRegister" component={GuideRegister} />
+          <Stack.Screen name="TouristRegister" component={TouristRegister} />
+          <Stack.Screen name="GuideSignUp" component={GuideSignUp} />
+          <Stack.Screen name="TouristSignUp" component={TouristSignUp} />
+          <Stack.Screen name="HomePageGuide" component={HomePageGuide} />
+          <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+          <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </FavoritesProvider>
   );
 }
 

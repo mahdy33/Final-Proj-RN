@@ -9,7 +9,7 @@ import GuidesLogo from '../assets/guides-logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-const apiUrl = 'http://guidest.somee.com/api/Guides';
+const apiUrl = 'https://application-guides.onrender.com/api/tourists';
 
 export default function TouristRegister() {
     const navigation = useNavigation();
@@ -18,8 +18,8 @@ export default function TouristRegister() {
 
     const btnRegister = () => {
         const s = {
-            Email: email,
-            Pass: password
+            email: email,  // Change this to match the expected key
+            password: password  // Change this to match the expected key
         };
 
         console.log('Sending registration request with:', s);

@@ -1,5 +1,4 @@
 // screens/GuideRegister.js
-
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import GoogleLogo from '../assets/google-logo.svg';
@@ -9,45 +8,49 @@ import GuidesLogo from '../assets/guides-logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-const apiUrl = 'http://guidest.somee.com/api/Guides';
+// Updated API URL
+const apiUrl = 'https://application-guides.onrender.com/api/guides';
 
 export default function GuideRegister() {
     const navigation = useNavigation();
-    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-
     const btnLogin = () => {
-        const s = {
-            Name: name,
-            Pass: password
+        const credentials = {
+            email: email,
+            password: password
         };
 
-        console.log('Sending login request with:', s);
+        console.log('Sending login request with:', credentials);
 
         fetch(apiUrl + '/login', {
             method: 'POST',
-            body: JSON.stringify(s),
+            body: JSON.stringify(credentials),
             headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8',
+                'Content-Type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json; charset=UTF-8',
             })
         })
             .then(res => {
                 console.log('Response status:', res.status);
                 if (res.status === 200) {
-
                     return res.json();
                 } else if (res.status === 404) {
-                    throw new Error('Password or Name not correct');
+                    throw new Error('Email or Password not correct');
                 } else {
                     throw new Error('Network response was not ok');
                 }
             })
             .then(result => {
                 console.log('API response:', result);
-
-                navigation.navigate('HomePageGuide');
+                const guide = {
+                    id: result.guide.__id__,
+                    email: result.guide.__email__,
+                    first_name: result.guide.__firstname__,
+                    last_name: result.guide.__lastname__,
+                };
+                navigation.navigate('HomePageGuide', { guide });
             })
             .catch(error => {
                 console.log('Fetch error:', error);
@@ -63,13 +66,12 @@ export default function GuideRegister() {
                 <Icon name="envelope" size={20} color="#666" style={styles.inputIcon} />
                 <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Email"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    value={name}
-                    onChangeText={setName}
+                    value={email}
+                    onChangeText={setEmail}
                 />
-
             </View>
             <View style={styles.inputContainer}>
                 <Icon name="lock" size={20} color="#666" style={styles.inputIcon} />
@@ -90,7 +92,7 @@ export default function GuideRegister() {
             </View>
             <TouchableOpacity
                 style={styles.loginButton}
-                onPress={btnLogin} // Call btnLogin on press
+                onPress={btnLogin}
             >
                 <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
@@ -112,7 +114,7 @@ export default function GuideRegister() {
             </View>
             <TouchableOpacity
                 style={styles.registerButton}
-                onPress={() => navigation.navigate('GuideSignUp')} // Navigate to GuideSignUp
+                onPress={() => navigation.navigate('GuideSignUp')}
             >
                 <Text style={styles.registerButtonText}>Register as guide</Text>
             </TouchableOpacity>
@@ -136,7 +138,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
         marginBottom: 10,
-
     },
     inputContainer: {
         flexDirection: 'row',
@@ -173,7 +174,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5,
         marginVertical: 10,
-
     },
     loginButtonText: {
         color: '#fff',
@@ -184,8 +184,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginVertical: 20,
-
-
     },
     separatorLine: {
         flex: 1,

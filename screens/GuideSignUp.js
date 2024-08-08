@@ -1,4 +1,4 @@
-// screens/GuidetSignUp.js
+// GuideSignUp.js`
 
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Switch } from 'react-native';
@@ -6,38 +6,43 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import GuidesLogo from '../assets/guides-logo.svg';
 import { useNavigation } from '@react-navigation/native';
 
-const apiUrl = 'http://guidest.somee.com/api/Guides';
+// Updated API URL
+const apiUrl = 'https://application-guides.onrender.com/api/guides';
 
 export default function GuideSignUp() {
     const navigation = useNavigation();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [dob, setDob] = useState('');
-    const [location, setLocation] = useState('');
+    const [first_name, setFirstName] = useState('');
+    const [last_name, setLastName] = useState('');
+    const [bio, setBio] = useState('');
+    const [country, setCountry] = useState('');
     const [hasCar, setHasCar] = useState(false);
+    const [average_rating, setAverageRating] = useState(0);
+    const [password, setPassword] = useState('');
+    const [phone_number, setPhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
     const [languages, setLanguages] = useState('');
 
     const btnRegister = () => {
         const guideData = {
-            Name: name,
-            Email: email,
-            Pass: password,
-            ConfirmPass: confirmPassword,
-            Dob: dob,
-            Location: location,
-            HasCar: hasCar,
-            Languages: languages
+            first_name,
+            last_name,
+            bio,
+            country,
+            hasCar,
+            average_rating,
+            password,
+            phone_number,
+            email,
+            languages: [{ language: languages, proficiency_level: 'native' }],
         };
 
         console.log('Sending registration request with:', guideData);
 
-        fetch(apiUrl + '/register', {
+        fetch(apiUrl, {
             method: 'POST',
             body: JSON.stringify(guideData),
             headers: new Headers({
-                'Content-type': 'application/json; charset=UTF-8',
+                'Content-Type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json; charset=UTF-8',
             })
         })
@@ -45,7 +50,7 @@ export default function GuideSignUp() {
                 console.log('Response status:', res.status);
                 if (res.status === 200) {
                     return res.json();
-                } else if (res.status === 404) {
+                } else if (res.status === 400) {
                     throw new Error('Registration details not correct');
                 } else {
                     throw new Error('Network response was not ok');
@@ -53,7 +58,7 @@ export default function GuideSignUp() {
             })
             .then(result => {
                 console.log('API response:', result);
-                navigation.navigate('HomePage');
+                navigation.navigate('HomePageGuide');
             })
             .catch(error => {
                 console.log('Fetch error:', error);
@@ -69,18 +74,66 @@ export default function GuideSignUp() {
                 <Icon name="user" size={20} color="#666" style={styles.inputIcon} />
                 <TextInput
                     style={styles.input}
-                    placeholder="Full Name"
+                    placeholder="First Name"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    value={name}
-                    onChangeText={setName}
+                    value={first_name}
+                    onChangeText={setFirstName}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="user" size={20} color="#666" style={styles.inputIcon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Last Name"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={last_name}
+                    onChangeText={setLastName}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="info-circle" size={20} color="#666" style={styles.inputIcon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Bio"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={bio}
+                    onChangeText={setBio}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="globe" size={20} color="#666" style={styles.inputIcon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Country"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={country}
+                    onChangeText={setCountry}
+                />
+            </View>
+            <View style={styles.switchContainer}>
+                <Text style={styles.switchLabel}>Has Car?</Text>
+                <Switch value={hasCar} onValueChange={setHasCar} />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="phone" size={20} color="#666" style={styles.inputIcon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Phone Number"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={phone_number}
+                    onChangeText={setPhoneNumber}
                 />
             </View>
             <View style={styles.inputContainer}>
                 <Icon name="envelope" size={20} color="#666" style={styles.inputIcon} />
                 <TextInput
                     style={styles.input}
-                    placeholder="Email ID"
+                    placeholder="Email"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -99,44 +152,6 @@ export default function GuideSignUp() {
                     value={password}
                     onChangeText={setPassword}
                 />
-            </View>
-            <View style={styles.inputContainer}>
-                <Icon name="lock" size={20} color="#666" style={styles.inputIcon} />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Confirm Password"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Icon name="calendar" size={20} color="#666" style={styles.inputIcon} />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Date of Birth"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    value={dob}
-                    onChangeText={setDob}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Icon name="map-marker" size={20} color="#666" style={styles.inputIcon} />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Location"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    value={location}
-                    onChangeText={setLocation}
-                />
-            </View>
-            <View style={styles.switchContainer}>
-                <Text style={styles.switchLabel}>Has Car?</Text>
-                <Switch value={hasCar} onValueChange={setHasCar} />
             </View>
             <View style={styles.inputContainer}>
                 <Icon name="language" size={20} color="#666" style={styles.inputIcon} />
