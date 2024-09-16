@@ -9,8 +9,8 @@ import GuidesLogo from '../assets/guides-logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-const apiUrl = 'https://application-guides.onrender.com/api/tourists';
-
+// const apiUrl = 'https://application-guides.onrender.com/api/tourists';
+const apiUrl = 'http://guides.somee.com/api/Tourists';
 export default function TouristRegister() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');

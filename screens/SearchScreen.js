@@ -104,7 +104,8 @@ export default function SearchScreen() {
 
     const fetchGuides = async () => {
         try {
-            const response = await axios.get('https://application-guides.onrender.com/api/guides');
+            // const response = await axios.get('https://application-guides.onrender.com/api/guides');
+            const response = await axios.get('http://guides.somee.com/api/GuidesRW');
             if (response.data.Guides) {
                 setGuides(response.data.Guides);
             } else {

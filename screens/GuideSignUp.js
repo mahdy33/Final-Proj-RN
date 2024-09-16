@@ -7,7 +7,9 @@ import GuidesLogo from '../assets/guides-logo.svg';
 import { useNavigation } from '@react-navigation/native';
 
 // Updated API URL
-const apiUrl = 'https://application-guides.onrender.com/api/guides';
+// const apiUrl = 'https://application-guides.onrender.com/api/guides';
+const apiUrl = 'http://guides.somee.com/api/GuidesRW';
+
 
 export default function GuideSignUp() {
     const navigation = useNavigation();

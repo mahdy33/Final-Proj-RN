@@ -26,7 +26,9 @@ export default function ProfileScreen() {
         const fetchGuideDetails = async () => {
             try {
                 console.log("Fetching guide details for ID:", guideInfo.id);
-                const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`);
+                // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`);
+                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}`);
+
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Fetched guide details:", result);
@@ -42,7 +44,9 @@ export default function ProfileScreen() {
 
         const fetchRoutes = async () => {
             try {
-                const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}/routes`);
+                // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}/routes`);
+                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}/routes`);
+
                 if (response.ok) {
                     const result = await response.json();
                     console.log("Fetched routes:", result);
@@ -72,23 +76,30 @@ export default function ProfileScreen() {
 
         console.log("Updating guide with data:", updatedGuide);
 
-        const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedGuide),
-        });
+        try {
+            // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`, {
+            const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}`, {
 
-        if (response.ok) {
-            const result = await response.json();
-            console.log("Updated guide data:", result);
-            setGuideInfo(result);
-            Alert.alert("Success", "Your information has been updated.");
-        } else {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedGuide),
+            });
+
+            if (response.ok) {
+                console.log("Guide successfully updated");
+                // Fetch the updated guide details again to reflect the changes in the UI
+                fetchGuideDetails(); // Call the function to fetch updated guide details
+                Alert.alert("Success", "Your information has been updated.");
+            } else {
+                Alert.alert("Error", "There was a problem updating your information.");
+            }
+        } catch (error) {
             Alert.alert("Error", "There was a problem updating your information.");
         }
     };
+
 
     if (!guideInfo) {
         return (
@@ -104,7 +115,7 @@ export default function ProfileScreen() {
                 source={{ uri: 'https://placekitten.com/200/200' }}
                 style={styles.profileImage}
             />
-            <Text style={styles.title}>Good Morning Guide</Text>
+            <Text style={styles.title}>Good Morning {guideInfo.first_name}</Text>
             <View style={styles.tripSection}>
                 <TouchableOpacity style={styles.tripButton}>
                     <Text style={styles.tripButtonText}>My current Trip</Text>
