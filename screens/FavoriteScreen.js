@@ -27,8 +27,10 @@ export default function FavoriteScreen() {
                 renderItem={({ item }) => (
                     <View style={styles.card}>
                         <TouchableOpacity onPress={() => openModal(item)} style={styles.cardContent}>
-                            <Text style={styles.name}>{item.first_name} {item.last_name}</Text>
-                            <Text style={styles.language}>Speaks: {item.languages.join(', ')}</Text>
+                            <Text style={styles.name}>{item.firstName} {item.lastName}</Text>
+                            <Text style={styles.language}>
+                                Speaks: {Array.isArray(item.languages) ? item.languages.join(', ') : item.languages}
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => removeFavorite(item)}>
                             <Icon name="times" size={20} color="#FF6347" />
@@ -47,8 +49,10 @@ export default function FavoriteScreen() {
                     <View style={styles.modalContainer}>
                         <View style={styles.modalContent}>
                             <Text style={styles.modalTitle}>Guide Details</Text>
-                            <Text style={styles.modalName}>{selectedGuide.first_name} {selectedGuide.last_name}</Text>
-                            <Text style={styles.modalLanguage}>Speaks: {selectedGuide.languages.join(', ')}</Text>
+                            <Text style={styles.modalName}>{selectedGuide.firstName} {selectedGuide.lastName}</Text>
+                            <Text style={styles.modalLanguage}>
+                                Speaks: {Array.isArray(selectedGuide.languages) ? selectedGuide.languages.join(', ') : selectedGuide.languages}
+                            </Text>
                             <Text style={styles.modalRating}>Rating: {selectedGuide.average_rating}/5</Text>
                             <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>Close</Text>

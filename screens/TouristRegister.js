@@ -18,8 +18,8 @@ export default function TouristRegister() {
 
     const btnRegister = () => {
         const s = {
-            email: email,  // Change this to match the expected key
-            password: password  // Change this to match the expected key
+            Email: email,  // Change this to match the expected key
+            pass: password  // Change this to match the expected key
         };
 
         console.log('Sending registration request with:', s);

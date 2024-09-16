@@ -18,8 +18,8 @@ export default function GuideRegister() {
 
     const btnLogin = () => {
         const credentials = {
-            email: email,
-            password: password
+            Email: email,
+            pass: password
         };
 
         console.log('Sending login request with:', credentials);
@@ -45,11 +45,12 @@ export default function GuideRegister() {
             .then(result => {
                 console.log('API response:', result);
                 const guide = {
-                    id: result.guide.__id__,
-                    email: result.guide.__email__,
-                    first_name: result.guide.__firstname__,
-                    last_name: result.guide.__lastname__,
+                    id: result.id,
+                    email: result.email,
+                    first_name: result.firstName,
+                    last_name: result.lastName,
                 };
+
                 navigation.navigate('HomePageGuide', { guide });
             })
             .catch(error => {

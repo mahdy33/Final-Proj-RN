@@ -83,7 +83,7 @@ import HomePageGuide from './screens/HomePageGuide';
 import FavoriteScreen from './screens/FavoriteScreen';
 import { FavoritesProvider } from './FavoritesContext';
 import ProfileScreen from './screens/ProfileScreen';
-
+import ProfileScreenTourist from './screens/ProfileScreenTourist';
 
 const Stack = createStackNavigator();
 
@@ -126,6 +126,7 @@ export default function App() {
           <Stack.Screen name="HomePageGuide" component={HomePageGuide} />
           <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
           <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+          <Stack.Screen name="ProfileScreenTourist" component={ProfileScreenTourist} />
         </Stack.Navigator>
       </NavigationContainer>
     </FavoritesProvider>

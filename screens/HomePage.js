@@ -6,7 +6,8 @@ import SearchScreen from './SearchScreen';
 import FavoriteScreen from './FavoriteScreen';
 // import CartScreen from './CartScreen';
 import SettingsScreen from './SettingsScreen';
-import ProfileScreen from './ProfileScreen';
+//import ProfileScreenTourist from './ProfileScreenTourist';
+import ProfileScreenTourist from './ProfileScreenTourist';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +46,7 @@ export default function HomePage() {
             <Tab.Screen name="Search" component={SearchScreen} />
             <Tab.Screen name="Favorites" component={FavoriteScreen} />
             <Tab.Screen name="Settings" component={SettingsScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreenTourist} />
         </Tab.Navigator>
     );
 }

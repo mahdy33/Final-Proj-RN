@@ -32,8 +32,10 @@ const TripCard = ({ guide }) => {
     return (
         <View style={styles.tripCard}>
             <Image source={require('../assets/searchscreen3.jpeg')} style={styles.tripImage} />
-            <Text style={styles.tripTitle}>{guide.first_name} {guide.last_name}</Text>
-            <Text style={styles.tripSubtitle}>Speaks: {guide.languages ? guide.languages.join(', ') : 'N/A'}</Text>
+            <Text style={styles.tripTitle}>{guide.firstName} {guide.lastName}</Text>
+            <Text style={styles.tripSubtitle}>
+                Speaks: {Array.isArray(guide.languages) ? guide.languages.join(', ') : guide.languages}
+            </Text>
             <View style={styles.tripFooter}>
                 <TouchableOpacity onPress={toggleFavorite}>
                     <Icon name="heart" size={20} color={isFavorite ? "#FF1493" : "#000"} />
@@ -44,15 +46,16 @@ const TripCard = ({ guide }) => {
                             key={index}
                             name="star"
                             size={20}
-                            color={index < guide.average_rating ? "#FFD700" : "#ccc"}
+                            color={index < guide.averageRating ? "#FFD700" : "#ccc"}
                         />
                     ))}
-                    <Text style={styles.ratingText}>{guide.average_rating}/5</Text>
+                    <Text style={styles.ratingText}>{guide.averageRating}/5</Text>
                 </View>
             </View>
         </View>
     );
 };
+
 
 export default function SearchScreen() {
     const navigation = useNavigation();
@@ -104,17 +107,16 @@ export default function SearchScreen() {
 
     const fetchGuides = async () => {
         try {
-            // const response = await axios.get('https://application-guides.onrender.com/api/guides');
             const response = await axios.get('http://guides.somee.com/api/GuidesRW');
-            if (response.data.Guides) {
-                setGuides(response.data.Guides);
-            } else {
-                console.error('Unexpected response structure:', response.data);
-            }
+
+            // Directly set the array since the response is the guide array, not wrapped in a "Guides" key
+            setGuides(response.data);
+
         } catch (error) {
             console.error('Error fetching guides:', error);
         }
     };
+
 
     const handleLogout = () => {
         console.log('Logout pressed');

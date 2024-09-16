@@ -5,7 +5,15 @@ import { useRoute } from '@react-navigation/native';
 
 export default function ProfileScreen() {
     const route = useRoute();
-    const { guide } = route.params;
+    const { guide } = route.params || {}; // Fallback to an empty object if guide is undefined
+
+    if (!guide) {
+        return (
+            <View style={styles.container}>
+                <Text>Error: Guide information is missing</Text>
+            </View>
+        );
+    }
 
     const [guideInfo, setGuideInfo] = useState({
         id: guide.id,
@@ -26,8 +34,7 @@ export default function ProfileScreen() {
         const fetchGuideDetails = async () => {
             try {
                 console.log("Fetching guide details for ID:", guideInfo.id);
-                // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`);
-                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}`);
+                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${id}`);
 
                 if (response.ok) {
                     const result = await response.json();
@@ -44,8 +51,7 @@ export default function ProfileScreen() {
 
         const fetchRoutes = async () => {
             try {
-                // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}/routes`);
-                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}/routes`);
+                const response = await fetch(`http://guides.somee.com/api/GuidesRW/${id}/routes`);
 
                 if (response.ok) {
                     const result = await response.json();
@@ -77,9 +83,7 @@ export default function ProfileScreen() {
         console.log("Updating guide with data:", updatedGuide);
 
         try {
-            // const response = await fetch(`https://application-guides.onrender.com/api/guides/${guideInfo.id}`, {
             const response = await fetch(`http://guides.somee.com/api/GuidesRW/${guideInfo.id}`, {
-
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,7 +93,6 @@ export default function ProfileScreen() {
 
             if (response.ok) {
                 console.log("Guide successfully updated");
-                // Fetch the updated guide details again to reflect the changes in the UI
                 fetchGuideDetails(); // Call the function to fetch updated guide details
                 Alert.alert("Success", "Your information has been updated.");
             } else {
@@ -99,7 +102,6 @@ export default function ProfileScreen() {
             Alert.alert("Error", "There was a problem updating your information.");
         }
     };
-
 
     if (!guideInfo) {
         return (
