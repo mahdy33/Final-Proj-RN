@@ -70,7 +70,7 @@
 
 
 // App.js
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -88,26 +88,28 @@ import ProfileScreenTourist from './screens/ProfileScreenTourist';
 const Stack = createStackNavigator();
 
 function MainScreen({ navigation }) {
+  const [showOptions, setShowOptions] = useState(false);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to the App</Text>
+      <Text style={styles.title}>Who are you?</Text>
       <Button
-        title="Go to Home Page"
-        onPress={() => navigation.navigate('HomePage')}
-      />
-      <Button
-        title="Guide Register"
-        onPress={() => navigation.navigate('GuideRegister')}
-      />
-      <Button
-        title="Tourist Register"
-        onPress={() => navigation.navigate('TouristRegister')}
-      />
-      <Button
-        title="Guide Home Page"
-        onPress={() => navigation.navigate('HomePageGuide')}
+        title="Choose"
+        onPress={() => setShowOptions(!showOptions)}
       />
 
+      {showOptions && (
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Guide"
+            onPress={() => navigation.navigate('GuideRegister')}
+          />
+          <Button
+            title="Tourist"
+            onPress={() => navigation.navigate('TouristRegister')}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -138,12 +140,40 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F0F4F8',
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#333',
+    marginBottom: 30,
+    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 15,
+    paddingHorizontal: 35,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
   },
 });

@@ -284,7 +284,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'linear-gradient(45deg, #1d976c, #93f9b9)', // Soft green gradient background
     },
     contentContainer: {
         paddingTop: 0, // Align the content to the top of the screen
@@ -293,12 +293,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 10,
+        padding: 20,
         backgroundColor: '#fff',
+        borderBottomWidth: 2,
+        borderBottomColor: '#e0e0e0',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
     },
     tempText: {
-        fontSize: 16,
+        fontSize: 18,
         color: '#333',
+        fontWeight: 'bold',
     },
     logo: {
         flex: 1,
@@ -306,22 +314,36 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         backgroundColor: '#FF1493',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        borderRadius: 20, // Pill-shaped button
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        elevation: 8,
     },
     logoutButtonText: {
         color: '#fff',
         fontSize: 16,
+        fontWeight: 'bold',
+        textTransform: 'uppercase', // Uppercase text
     },
     featuredContainer: {
         position: 'relative',
-        height: 200,
-        marginBottom: 20,
+        height: 250, // Make the featured section larger
+        marginBottom: 30,
+        borderRadius: 20,
+        overflow: 'hidden',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.4,
+        shadowRadius: 10,
+        elevation: 10,
     },
     featuredImage: {
         height: '100%',
-        borderRadius: 10,
+        borderRadius: 20,
     },
     inputContainer: {
         position: 'absolute',
@@ -330,26 +352,30 @@ const styles = StyleSheet.create({
         right: '5%',
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 10,
     },
     searchSection: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        height: 50,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)', // Dark translucent background
+        borderRadius: 10, // Rounded corners for input
+        paddingHorizontal: 15,
+        height: 55, // Increase height for better touch experience
         borderColor: '#fff',
-        borderWidth: 1,
+        borderWidth: 1.5,
         flex: 2,
-        marginRight: 5,
+        marginRight: 10,
     },
     searchIcon: {
         marginRight: 10,
+        color: '#fff', // White search icon
     },
     input: {
         flex: 1,
         height: '100%',
-        color: '#fff',
+        color: '#fff', // White text inside the input
+        fontSize: 16,
     },
     sideInputs: {
         flexDirection: 'row',
@@ -358,50 +384,61 @@ const styles = StyleSheet.create({
     },
     dateInput: {
         flex: 1,
-        height: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 5,
-        paddingHorizontal: 10,
+        height: 55,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)', // Dark translucent background
+        borderRadius: 10,
+        paddingHorizontal: 15,
         borderColor: '#fff',
-        borderWidth: 1,
+        borderWidth: 1.5,
         justifyContent: 'center',
-        marginRight: 5,
+        marginRight: 10,
     },
     dateInputText: {
-        color: '#fff',
+        color: '#fff', // White text
     },
     peopleInput: {
         flex: 1,
-        height: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        borderRadius: 5,
-        paddingHorizontal: 10,
+        height: 55,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        borderRadius: 10,
+        paddingHorizontal: 15,
         borderColor: '#fff',
-        borderWidth: 1,
+        borderWidth: 1.5,
         color: '#fff',
     },
     list: {
         flex: 1,
+        padding: 20,
     },
     countryItem: {
-        padding: 15,
-        borderBottomWidth: 1,
+        padding: 20,
+        borderBottomWidth: 1.5,
         borderBottomColor: '#ccc',
+        backgroundColor: '#f9f9f9', // Soft white background for each item
+        borderRadius: 10,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 6,
     },
     countryName: {
-        fontSize: 16,
+        fontSize: 18,
         color: '#333',
+        fontWeight: 'bold',
     },
     sectionHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 20,
-        marginBottom: 10,
+        marginBottom: 15,
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
+        color: '#333',
     },
     horizontalScroll: {
         paddingLeft: 20,
@@ -409,22 +446,27 @@ const styles = StyleSheet.create({
     },
     tripCard: {
         backgroundColor: '#fff',
-        borderRadius: 10,
-        padding: 10,
+        borderRadius: 20, // Rounded corners for trip cards
+        padding: 15,
         margin: 10,
-        width: 200,
+        width: 220, // Slightly bigger card size
         alignItems: 'center',
-        borderColor: '#ccc',
-        borderWidth: 1,
+        borderColor: '#ddd',
+        borderWidth: 1.5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 10, // More shadow to create depth
     },
     tripImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 10,
+        width: 140, // Larger image
+        height: 140,
+        borderRadius: 15,
         marginBottom: 10,
     },
     tripTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
@@ -436,15 +478,15 @@ const styles = StyleSheet.create({
     tripFooter: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 15,
     },
     ratingContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 10,
+        marginLeft: 15,
     },
     ratingText: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#333',
         marginLeft: 5,
     },
@@ -452,16 +494,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         backgroundColor: '#fff',
-        paddingVertical: 10,
-        borderTopWidth: 1,
+        paddingVertical: 15,
+        borderTopWidth: 1.5,
         borderTopColor: '#ddd',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 5,
     },
     footerButton: {
         alignItems: 'center',
     },
     footerButtonText: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#555',
-        marginTop: 5,
+        marginTop: 8,
+        fontWeight: 'bold',
     },
 });

@@ -121,75 +121,99 @@ export default function TouristRegister() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'linear-gradient(135deg, #12c2e9, #c471ed, #f64f59)', // Amazing gradient from blue to pink to red
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
     },
     logo: {
-        marginBottom: 20, // Add some margin to separate it from the title
+        marginBottom: 30, // A bit more space for visual balance
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 8,
     },
     title: {
-        fontSize: 24,
+        fontSize: 28, // Bigger title for better emphasis
         fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 10,
+        color: '#fff', // White text to contrast with background
+        marginBottom: 20,
+        textShadowColor: 'rgba(0, 0, 0, 0.3)', // Soft text shadow
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 5,
     },
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        backgroundColor: '#fff',
-        paddingHorizontal: 10,
-        marginVertical: 10,
-        borderRadius: 5,
-        borderColor: '#ccc',
-        borderWidth: 1,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)', // Slightly transparent white for inputs
+        paddingHorizontal: 15,
+        marginVertical: 15,
+        borderRadius: 10,
+        borderColor: 'rgba(255, 255, 255, 0.7)', // Subtle white border
+        borderWidth: 1.5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 8,
     },
     inputIcon: {
-        marginRight: 10,
+        marginRight: 15,
+        color: '#007BFF', // Icon color to match button
     },
     input: {
         flex: 1,
-        height: 50,
+        height: 55,
+        color: '#333', // Dark input text for contrast
+        fontSize: 16,
     },
     forgotPasswordContainer: {
         width: '100%',
-        alignItems: 'flex-end', // Align to the right side
+        alignItems: 'flex-end',
         marginBottom: 10,
     },
     forgotPasswordText: {
-        color: '#007BFF',
+        color: '#fff', // White text for forgot password
         fontSize: 14,
+        textDecorationLine: 'underline', // Underline for emphasis
     },
     loginButton: {
         width: '100%',
-        height: 50,
-        backgroundColor: '#007BFF',
+        height: 55, // Taller button for better touch experience
+        backgroundColor: 'linear-gradient(90deg, #007BFF, #00c6ff)', // Vibrant gradient for login button
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 5,
-        marginVertical: 10,
+        borderRadius: 10, // Smooth rounded corners
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 8,
+        marginVertical: 20,
     },
     loginButtonText: {
-        color: '#fff',
-        fontSize: 16,
+        color: '#fff', // White text for contrast
+        fontSize: 18, // Slightly bigger font for better visibility
+        fontWeight: 'bold',
+        textTransform: 'uppercase', // Strong uppercase look
     },
     separatorContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        marginVertical: 20,
+        marginVertical: 30,
     },
     separatorLine: {
         flex: 1,
         height: 1,
-        backgroundColor: '#ccc',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Faded white separator line
     },
     separatorText: {
-        marginHorizontal: 10,
+        marginHorizontal: 15,
         fontSize: 16,
-        color: '#666',
+        color: '#fff', // White text for separator
     },
     socialButtonsContainer: {
         flexDirection: 'row',
@@ -197,26 +221,27 @@ const styles = StyleSheet.create({
         marginVertical: 30,
     },
     socialButton: {
-        width: 100,
+        width: 110,
         height: 60,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff', // Clean white for social buttons
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
         borderColor: '#ddd',
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 3,
-        elevation: 3,
-        marginHorizontal: 10, // Add horizontal margin to separate buttons
+        shadowRadius: 8,
+        elevation: 8,
+        marginHorizontal: 10,
     },
     registerButton: {
-        marginTop: 20,
+        marginTop: 30,
     },
     registerButtonText: {
-        color: '#007BFF',
+        color: 'blue', // White text to fit theme
         fontSize: 16,
+        fontWeight: 'bold',
     },
 });

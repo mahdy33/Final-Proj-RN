@@ -10,7 +10,7 @@ export const FavoritesProvider = ({ children }) => {
     };
 
     const removeFavorite = (guide) => {
-        setFavorites(favorites.filter(fav => fav._id !== guide._id));
+        setFavorites(favorites.filter(fav => fav.id !== guide.id));
     };
 
     return (
